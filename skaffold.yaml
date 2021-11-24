@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests: 
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: toyosi/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: 'src/**/*.js'
+            dest: .
+    - image: toyosi/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: toyosi/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: toyosi/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: toyosi/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: '*.js'
+            dest: .
+    - image: toyosi/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync: 
+        manual: 
+          - src: '*.js'
+            dest: .
